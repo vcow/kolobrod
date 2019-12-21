@@ -7,6 +7,9 @@
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.2.6",
     "com.unity.ugui": "1.0.0",
+    "vcow.base.logicality": "https://github.com/vcow/lib-logicality.git#1.0.0",
+    "vcow.base.screen-locker": "https://github.com/vcow/lib-screen-locker.git#1.0.0",
+    "vcow.helpers.touch-helper": "https://github.com/vcow/lib-touch-helper.git#1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -38,5 +41,19 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "vcow.base.logicality": {
+      "revision": "1.0.0",
+      "hash": "c8e17275f202e601c78f0943cd50f5659f203684"
+    },
+    "vcow.base.screen-locker": {
+      "revision": "1.0.0",
+      "hash": "559348ff692c6f0394e4a438326c8896ab12e049"
+    },
+    "vcow.helpers.touch-helper": {
+      "revision": "1.0.0",
+      "hash": "1d1aaf7fe838122ecc806efa543599a2ccad6aa7"
+    }
   }
 }
