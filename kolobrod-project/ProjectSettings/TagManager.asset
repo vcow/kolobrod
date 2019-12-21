@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Character
+  - Container
+  - Ground
+  - Player
+  - Ammo
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: PlayerSortingLayer
+    uniqueID: 1328727441
+    locked: 0
+  - name: CharacterSortingLayer1
+    uniqueID: 3958944331
+    locked: 0
+  - name: CharacterSortingLayer2
+    uniqueID: 2394624307
+    locked: 0
+  - name: CharacterSortingLayer3
+    uniqueID: 2369419261
+    locked: 0
+  - name: CharacterSortingLayer4
+    uniqueID: 3663887885
+    locked: 0
+  - name: CharacterSortingLayer5
+    uniqueID: 2447487315
+    locked: 0
+  - name: CharacterSortingLayer6
+    uniqueID: 4071335059
+    locked: 0
+  - name: CharacterSortingLayer7
+    uniqueID: 2831536929
+    locked: 0
+  - name: CharacterSortingLayer8
+    uniqueID: 2885618747
+    locked: 0
+  - name: CharacterSortingLayer9
+    uniqueID: 3457870673
+    locked: 0
+  - name: CharacterSortingLayer10
+    uniqueID: 3450208809
+    locked: 0
+  - name: FxSortingLayer
+    uniqueID: 1044409197
+    locked: 0
