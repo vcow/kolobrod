@@ -23,6 +23,9 @@ TextureImporter:
   - first:
       213: -6846636590754279922
     second: anna_6
+  - first:
+      213: 6150145139308767838
+    second: anna_7
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -63,12 +66,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -127,7 +130,7 @@ TextureImporter:
         width: 6
         height: 68
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -148,7 +151,7 @@ TextureImporter:
         width: 242
         height: 1024
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -169,7 +172,7 @@ TextureImporter:
         width: 105
         height: 316
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -177,48 +180,6 @@ TextureImporter:
       bones: []
       spriteID: 5a5356619a9b2554a82477e553a2ec94
       internalID: 7217112325130132482
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: anna_3
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 795
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 85d4aba3665d761418a153ac1b4882b7
-      internalID: -5255579787727792044
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: anna_4
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 748
-        width: 5
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0783b332b16503441893da3377f94301
-      internalID: -2704061148394157911
       vertices: []
       indices: 
       edges: []
@@ -232,7 +193,7 @@ TextureImporter:
         width: 147
         height: 439
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -253,7 +214,7 @@ TextureImporter:
         width: 198
         height: 481
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -261,6 +222,27 @@ TextureImporter:
       bones: []
       spriteID: e19a584b58cf17e44b144912e8ff22ef
       internalID: -6846636590754279922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: anna_7
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 775
+        width: 57
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5317d856cfa1594496fcbeb2710bc54
+      internalID: 6150145139308767838
       vertices: []
       indices: 
       edges: []
@@ -278,6 +260,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 
+  userData: 637126150883189368
   assetBundleName: 
   assetBundleVariant: 
