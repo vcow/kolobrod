@@ -25,12 +25,12 @@ namespace StartGameScene
 
 		public void OnSelectAnna(bool select)
 		{
-			if (select) _avatarType = AvatarType.Anna;
+			_avatarType = AvatarType.Anna;
 		}
 
 		public void OnSelectAntonio(bool select)
 		{
-			if (select) _avatarType = AvatarType.Antonio;
+			_avatarType = AvatarType.Antonio;
 		}
 
 		public void OnPlay()
