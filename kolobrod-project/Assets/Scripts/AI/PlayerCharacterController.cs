@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,12 +12,17 @@ namespace AI
 
 		public void OnWalk(InputAction.CallbackContext context)
 		{
-			Debug.Log("Walk!");
+			if (context.phase != InputActionPhase.Performed) return;
+			var value = context.ReadValue<Vector2>();
+			Debug.LogFormat("Walk! {0}", value);
 		}
 
 		public void OnFire(InputAction.CallbackContext context)
 		{
-			Debug.Log("Fire!");
+			
+			if (context.phase != InputActionPhase.Performed) return;
+			var value = context.ReadValue<Vector2>();
+			Debug.LogFormat("Fire! {0}", value);
 		}
 	}
 }

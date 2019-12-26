@@ -11,13 +11,13 @@
                     "id": "b37a4830-0818-48e5-b663-9470e1b2ad3f",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Fire",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "43fdc56a-b561-4ef1-95be-735e8b7dcaf1",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 }
@@ -134,26 +134,70 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "664f2c15-eabd-4bcf-bfac-46c9fa28deac",
+                    "name": "MousePointer",
+                    "id": "0a56f4c9-ce25-436d-83cf-fa73d9a86e19",
+                    "path": "PointerInput",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "button",
+                    "id": "3deb2547-fe68-418c-bad1-573c41a68c2b",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Fire",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "88f01ffe-de06-4292-a478-c1f225d1f5f7",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "name": "Position",
+                    "id": "9e994e58-98ac-4e35-9250-380e85dcc410",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Fire",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "TouchpadPointer",
+                    "id": "0bdb7539-ea28-4482-852d-77ffb4a04474",
+                    "path": "PointerInput",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Button",
+                    "id": "b6c62ae2-ce36-48cc-9824-312945b68e35",
+                    "path": "<Touchscreen>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Position",
+                    "id": "51b8bff6-31d9-494e-9331-b4f6f177698a",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
