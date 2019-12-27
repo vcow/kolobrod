@@ -618,11 +618,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011400001885289}
   - component: {fileID: 2756011400001885270}
-  - component: {fileID: 5700926471645349761}
+  - component: {fileID: 3855523473852003703}
   - component: {fileID: 3793132386543641530}
   - component: {fileID: -8790650244622553360}
   - component: {fileID: 370879333853638076}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Antonio
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -669,8 +669,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!70 &5700926471645349761
-CapsuleCollider2D:
+--- !u!61 &3855523473852003703
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -682,9 +682,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00999999, y: 0.6607542}
-  m_Size: {x: 2.25, y: 9.868492}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0.64}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.87, y: 9.95}
+  m_EdgeRadius: 0
 --- !u!50 &3793132386543641530
 Rigidbody2D:
   serializedVersion: 4
