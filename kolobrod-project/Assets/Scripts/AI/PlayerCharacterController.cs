@@ -17,15 +17,16 @@ namespace AI
 		private static readonly int IsWalk = Animator.StringToHash("IsWalk");
 		private static readonly int WeaponUp = Animator.StringToHash("WeaponUp");
 		private static readonly int Recoil = Animator.StringToHash("Recoil");
+		private static readonly int Hit = Animator.StringToHash("Hit");
 
 		private float _shotAng;
 		private float _velocity;
 
-		private float _health = 100f;
 
 #pragma warning disable 649
 		[SerializeField] private float _speed = 5;
 		[SerializeField] private Transform _armRotationAxis;
+		[SerializeField] private float _health = 1000f;
 #pragma warning restore 649
 
 		private void Awake()
@@ -82,5 +83,14 @@ namespace AI
 		}
 
 		public bool IsDead => _health <= 0;
+
+		public void Damage(float damage)
+		{
+			_health -= damage;
+			if (damage > 0)
+			{
+				_animator.SetTrigger(Hit);
+			}
+		}
 	}
 }

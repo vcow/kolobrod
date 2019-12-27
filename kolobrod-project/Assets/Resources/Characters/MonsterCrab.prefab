@@ -69,7 +69,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _container: {fileID: 8331979805247469628}
   _aggressDistance: 25
+  _attackMaxDistance: 4.5
+  _attackMinDistance: 3
   _speed: 1.3
+  _rechargeTime: 1
+  _damage: 20
+  _health: 100
 --- !u!1 &8331979803561787790
 GameObject:
   m_ObjectHideFlags: 0

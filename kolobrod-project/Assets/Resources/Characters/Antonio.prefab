@@ -730,6 +730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 7
   _armRotationAxis: {fileID: 2756011399844787892}
+  _health: 1000
 --- !u!114 &370879333853638076
 MonoBehaviour:
   m_ObjectHideFlags: 0

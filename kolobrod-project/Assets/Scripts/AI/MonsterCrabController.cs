@@ -1,3 +1,4 @@
+using System;
 using Anima2D;
 using UniRx;
 using UniRx.Triggers;
@@ -13,7 +14,8 @@ namespace AI
 		private IkLimb2D[] _limbs;
 		private Animator _animator;
 
-		private readonly CompositeDisposable _collisionHandlers = new CompositeDisposable();
+		private readonly CompositeDisposable _handlers = new CompositeDisposable();
+		private IDisposable _timerHandler;
 
 		private PlayerCharacterController _player;
 
@@ -40,7 +42,12 @@ namespace AI
 #pragma warning disable 649
 		[SerializeField] private Rigidbody2D _container;
 		[SerializeField] private float _aggressDistance;
+		[SerializeField] private float _attackMaxDistance;
+		[SerializeField] private float _attackMinDistance;
 		[SerializeField] private float _speed;
+		[SerializeField] private float _rechargeTime;
+		[SerializeField] private float _damage;
+		[SerializeField] private float _health;
 #pragma warning restore 649
 
 		private void Start()
@@ -58,13 +65,13 @@ namespace AI
 			{
 				rigidBody.bodyType = RigidbodyType2D.Kinematic;
 				rigidBody.GetComponent<Collider2D>().isTrigger = true;
-				_collisionHandlers.Add(rigidBody.OnTriggerEnter2DAsObservable().Subscribe(OnCollide));
+				_handlers.Add(rigidBody.OnTriggerEnter2DAsObservable().Subscribe(OnCollide));
 			}
 		}
 
 		private void OnDestroy()
 		{
-			_collisionHandlers.Dispose();
+			_handlers.Dispose();
 		}
 
 		private void FixedUpdate()
@@ -96,13 +103,19 @@ namespace AI
 				return;
 			}
 
-			if (_isAttack || magnitude <= 0.1f)
+			if (!_isAttack && !_player.IsDead && magnitude <= _attackMaxDistance && magnitude > _attackMinDistance)
+			{
+				AttackPlayer();
+			}
+
+			if (_isAttack || _player.IsDead && magnitude <= 0.1f)
 			{
 				_velocity = 0;
 			}
 			else
 			{
 				_velocity = _playerTransform.position.x < _transform.position.x ? -_speed : _speed;
+				if (magnitude <= _attackMinDistance) _velocity *= -1;
 			}
 
 			var isWalk = Mathf.Abs(_velocity) > 0;
@@ -125,20 +138,39 @@ namespace AI
 		private void OnCollide(Collider2D c)
 		{
 			_landing |= c.gameObject.layer == _groundId;
-
-//			Debug.Log("COLLIDE!");
 		}
 
 		private void AttackPlayer()
 		{
 			Assert.IsNotNull(_player);
+			Assert.IsNull(_timerHandler);
 			Assert.IsFalse(_isAttack);
+
 			_isAttack = true;
+
+			var invert = _playerTransform.position.x > _transform.position.x;
+			if (invert != _invert)
+			{
+				_invert = invert;
+				_transform.localScale = _invert ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+			}
+
 			_animator.SetTrigger(Attack);
+			_timerHandler = Observable.Timer(TimeSpan.FromSeconds(_rechargeTime)).Subscribe(l =>
+			{
+				_handlers.Remove(_timerHandler);
+				_timerHandler = null;
+				_isAttack = false;
+			});
+			_handlers.Add(_timerHandler);
 		}
 
 		public void OnAttack()
 		{
+			if (Mathf.Abs(_playerTransform.position.x - _transform.position.x) <= _attackMaxDistance)
+			{
+				_player.Damage(_damage);
+			}
 		}
 
 		public void Die()
@@ -146,7 +178,9 @@ namespace AI
 			transform.SetParent(null, true);
 			Destroy(_container.gameObject);
 
-			_collisionHandlers.Dispose();
+			_animator.enabled = false;
+
+			_handlers.Dispose();
 			foreach (var rigidBody in _rigidBodies)
 			{
 				rigidBody.bodyType = RigidbodyType2D.Dynamic;
