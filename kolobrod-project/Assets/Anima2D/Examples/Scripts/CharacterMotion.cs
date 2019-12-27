@@ -12,6 +12,7 @@ public class CharacterMotion : MonoBehaviour
 
 	void Update ()
 	{
+/*
 		float xAxis = Input.GetAxis("Horizontal");
 
 		Vector3 eulerAngles = transform.localEulerAngles;
@@ -27,5 +28,6 @@ public class CharacterMotion : MonoBehaviour
 		transform.localRotation = Quaternion.Euler(eulerAngles);
 
 		animator.SetFloat("Forward", Mathf.Abs(xAxis));
+*/
 	}
 }
