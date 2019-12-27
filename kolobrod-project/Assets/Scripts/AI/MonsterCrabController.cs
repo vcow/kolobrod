@@ -23,14 +23,15 @@ namespace AI
 		private int _characterId;
 		private int _containerId;
 
-		private float _aggressDistanceQuad;
 		private bool _aggred;
 
 		private Transform _transform;
+		private Transform _playerTransform;
 
 		private float _velocity;
 
 		private bool _isWalk;
+		private bool _invert;
 		private bool _isAttack;
 
 		private static readonly int IsWalk = Animator.StringToHash("IsWalk");
@@ -48,7 +49,6 @@ namespace AI
 			_characterId = LayerMask.NameToLayer("Character");
 			_containerId = LayerMask.NameToLayer("Container");
 
-			_aggressDistanceQuad = _aggressDistance * _aggressDistance;
 			_transform = transform;
 			_animator = GetComponent<Animator>();
 
@@ -60,8 +60,6 @@ namespace AI
 				rigidBody.GetComponent<Collider2D>().isTrigger = true;
 				_collisionHandlers.Add(rigidBody.OnTriggerEnter2DAsObservable().Subscribe(OnCollide));
 			}
-
-			_collisionHandlers.Add(_container.OnCollisionEnter2DAsObservable().Subscribe(OnCollideContainer));
 		}
 
 		private void OnDestroy()
@@ -87,43 +85,38 @@ namespace AI
 				}
 
 				_player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerCharacterController>();
+				_playerTransform = _player != null ? _player.transform : null;
 				return;
 			}
 
+			var magnitude = Mathf.Abs((_playerTransform.position - _transform.position).x);
 			if (!_aggred)
 			{
-				_aggred = (_player.transform.position - _transform.position).sqrMagnitude <= _aggressDistanceQuad;
+				_aggred = magnitude <= _aggressDistance;
 				return;
 			}
 
-			if (_isAttack)
+			if (_isAttack || magnitude <= 0.1f)
 			{
 				_velocity = 0;
 			}
 			else
 			{
-				if (_player.transform.position.x < _transform.position.x)
-				{
-					if (_velocity >= 0)
-					{
-						_transform.localScale = new Vector3(1, 1, 1);
-						_velocity = -_speed;
-					}
-				}
-				else
-				{
-					if (_velocity < 0)
-					{
-						_transform.localScale = new Vector3(-1, 1, 1);
-						_velocity = _speed;
-					}
-				}
+				_velocity = _playerTransform.position.x < _transform.position.x ? -_speed : _speed;
 			}
 
-			if (!_isWalk && Mathf.Abs(_velocity) > 0)
+			var isWalk = Mathf.Abs(_velocity) > 0;
+			if (_isWalk != isWalk)
 			{
-				_isWalk = true;
-				_animator.SetBool(IsWalk, true);
+				_isWalk = isWalk;
+				_animator.SetBool(IsWalk, _isWalk);
+			}
+
+			var invert = _isWalk ? _velocity > 0 : _invert;
+			if (invert != _invert)
+			{
+				_invert = invert;
+				_transform.localScale = _invert ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
 			}
 
 			_container.velocity = new Vector2(_velocity, _container.velocity.y);
@@ -133,18 +126,7 @@ namespace AI
 		{
 			_landing |= c.gameObject.layer == _groundId;
 
-			Debug.Log("COLLIDE!");
-		}
-
-		private void OnCollideContainer(Collision2D c)
-		{
-			if (!_isAttack && c.gameObject.layer == _containerId)
-			{
-				if (c.gameObject.CompareTag("Player"))
-				{
-					AttackPlayer();
-				}
-			}
+//			Debug.Log("COLLIDE!");
 		}
 
 		private void AttackPlayer()

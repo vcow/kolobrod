@@ -10,9 +10,8 @@ namespace AI
 		private Rigidbody2D _rigidBody;
 		private Transform _transform;
 
-		private Vector2 _movement;
-		private bool _walk;
-		private bool _reverse;
+		private bool _isWalk;
+		private bool _invert;
 		private Camera _cam;
 
 		private static readonly int IsWalk = Animator.StringToHash("IsWalk");
@@ -20,9 +19,12 @@ namespace AI
 		private static readonly int Recoil = Animator.StringToHash("Recoil");
 
 		private float _shotAng;
+		private float _velocity;
+
+		private float _health = 100f;
 
 #pragma warning disable 649
-		[SerializeField] private float _speed = 100;
+		[SerializeField] private float _speed = 5;
 		[SerializeField] private Transform _armRotationAxis;
 #pragma warning restore 649
 
@@ -38,26 +40,26 @@ namespace AI
 		{
 			if (context.phase != InputActionPhase.Performed) return;
 			var value = context.ReadValue<Vector2>();
-			_movement = value * Vector2.right * _speed;
+			_velocity = value.x * _speed;
 		}
 
 		private void FixedUpdate()
 		{
-			_rigidBody.AddForce(_movement);
-			var vel = _rigidBody.velocity.x;
-			var walk = Mathf.Abs(vel) > 0;
-			var reverse = vel < 0;
-			if (walk != _walk)
+			var isWalk = Mathf.Abs(_velocity) > 0;
+			if (isWalk != _isWalk)
 			{
-				_animator.SetBool(IsWalk, walk);
-				_walk = walk;
+				_isWalk = isWalk;
+				_animator.SetBool(IsWalk, _isWalk);
 			}
 
-			if (walk && reverse != _reverse)
+			var invert = _isWalk ? _velocity < 0 : _invert;
+			if (invert != _invert)
 			{
-				_transform.localScale = reverse ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
-				_reverse = reverse;
+				_invert = invert;
+				_transform.localScale = _invert ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
 			}
+
+			_rigidBody.velocity = new Vector2(_velocity, _rigidBody.velocity.y);
 		}
 
 		public void OnFire(InputAction.CallbackContext context)
@@ -78,5 +80,7 @@ namespace AI
 			_animator.SetTrigger(Recoil);
 			_shotAng = ang;
 		}
+
+		public bool IsDead => _health <= 0;
 	}
 }
