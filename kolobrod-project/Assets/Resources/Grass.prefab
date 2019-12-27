@@ -43,12 +43,12 @@ GameObject:
   - component: {fileID: 8333920523695257834}
   - component: {fileID: 5914344179633644172}
   - component: {fileID: 1236794715473786586}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2537812653703319033
 Transform:
