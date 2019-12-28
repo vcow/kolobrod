@@ -20,15 +20,17 @@ namespace AI
 		private static readonly int Recoil = Animator.StringToHash("Recoil");
 		private static readonly int Hit = Animator.StringToHash("Hit");
 
-		private float _shotAng;
 		private float _velocity;
 
+		private WeaponController _weapon;
 
 #pragma warning disable 649
 		[SerializeField] private float _speed = 5;
 		[SerializeField] private Transform _armRotationAxis;
 		[SerializeField] private FloatReactiveProperty _health;
 		[SerializeField] private GameObject _bloodSplatPrefab;
+		[SerializeField] private Transform _weaponConnectionPoint;
+		[SerializeField] private GameObject _defaultWeaponPrefab;
 #pragma warning restore 649
 
 		private void Awake()
@@ -37,6 +39,15 @@ namespace AI
 			_rigidBody = GetComponent<Rigidbody2D>();
 			_transform = transform;
 			_cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+		}
+
+		private void Start()
+		{
+			if (_defaultWeaponPrefab)
+			{
+				_weapon = Instantiate(_defaultWeaponPrefab, _weaponConnectionPoint)
+					.GetComponent<WeaponController>();
+			}
 		}
 
 		public void OnWalk(InputAction.CallbackContext context)
@@ -81,8 +92,10 @@ namespace AI
 			}
 
 			_animator.SetFloat(WeaponUp, Mathf.Clamp01((ang + 90f) / 180f));
-			_animator.SetTrigger(Recoil);
-			_shotAng = ang;
+			if (_weapon && _weapon.Shut(worldPosition))
+			{
+				_animator.SetTrigger(Recoil);
+			}
 		}
 
 		public bool IsDead => _health.Value <= 0;

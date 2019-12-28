@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_BoneTransforms:
   - {fileID: 2756011401280206489}
   - {fileID: 2756011399388408226}
@@ -636,7 +636,7 @@ SkinnedMeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -777,6 +777,9 @@ MonoBehaviour:
   _health:
     value: 1000
   _bloodSplatPrefab: {fileID: 3365422414632512832, guid: eca1fb28482e8f942b0eab44f9232cfe,
+    type: 3}
+  _weaponConnectionPoint: {fileID: 2756011400985218486}
+  _defaultWeaponPrefab: {fileID: 4429504333536477002, guid: f0c15f9642b0ff64980e75ffde8eb04d,
     type: 3}
 --- !u!114 &370879333853638076
 MonoBehaviour:
@@ -1515,7 +1518,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_BoneTransforms:
   - {fileID: 2756011400129592914}
   - {fileID: 2756011399428094335}
@@ -1558,7 +1561,7 @@ SkinnedMeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
