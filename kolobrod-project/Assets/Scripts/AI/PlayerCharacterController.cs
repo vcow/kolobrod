@@ -27,6 +27,7 @@ namespace AI
 		[SerializeField] private float _speed = 5;
 		[SerializeField] private Transform _armRotationAxis;
 		[SerializeField] private float _health = 1000f;
+		[SerializeField] private GameObject _bloodSplatPrefab;
 #pragma warning restore 649
 
 		private void Awake()
@@ -84,12 +85,19 @@ namespace AI
 
 		public bool IsDead => _health <= 0;
 
-		public void Damage(float damage)
+		public void Damage(float damage, Vector2? point)
 		{
 			_health -= damage;
 			if (damage > 0)
 			{
 				_animator.SetTrigger(Hit);
+			}
+
+			if (point.HasValue && _bloodSplatPrefab != null)
+			{
+				var blood = Instantiate(_bloodSplatPrefab, point.Value, Quaternion.identity);
+				if (point.Value.x < _transform.position.x) blood.transform.localScale = new Vector3(-1, 1, 1);
+				Destroy(blood, 2);
 			}
 		}
 	}

@@ -155,7 +155,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011399412792181}
   - component: {fileID: 2756011399412792178}
-  m_Layer: 0
+  - component: {fileID: 951050297731065173}
+  m_Layer: 11
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,6 +193,22 @@ MonoBehaviour:
   m_Length: 1.5
   m_ChildTransform: {fileID: 0}
   m_AttachedIK: {fileID: 0}
+--- !u!58 &951050297731065173
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011399412792180}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.59, y: -0.12}
+  serializedVersion: 2
+  m_Radius: 1.04
 --- !u!1 &2756011399428094334
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +380,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011399743165945}
   - component: {fileID: 2756011399743165926}
-  m_Layer: 0
+  - component: {fileID: 2801652879667236886}
+  m_Layer: 11
   m_Name: Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,6 +422,32 @@ MonoBehaviour:
   m_Length: 1.1967492
   m_ChildTransform: {fileID: 2756011399491307783}
   m_AttachedIK: {fileID: 0}
+--- !u!61 &2801652879667236886
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011399743165944}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.48, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.09, y: 1.82}
+  m_EdgeRadius: 0
 --- !u!1 &2756011399768985765
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +775,8 @@ MonoBehaviour:
   _speed: 7
   _armRotationAxis: {fileID: 2756011399844787892}
   _health: 1000
+  _bloodSplatPrefab: {fileID: 3365422414632512832, guid: eca1fb28482e8f942b0eab44f9232cfe,
+    type: 3}
 --- !u!114 &370879333853638076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1030,7 +1076,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011400510722960}
   - component: {fileID: 2756011400510722961}
-  m_Layer: 0
+  - component: {fileID: 2784431236132874647}
+  m_Layer: 11
   m_Name: RLeg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1068,6 +1115,32 @@ MonoBehaviour:
   m_Length: 1.9568113
   m_ChildTransform: {fileID: 2756011401350907894}
   m_AttachedIK: {fileID: 2756011399768985763}
+--- !u!61 &2784431236132874647
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011400510722963}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.86, y: -0.15}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.25, y: 1.47}
+  m_EdgeRadius: 0
 --- !u!1 &2756011400588684558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,7 +1353,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011401054642429}
   - component: {fileID: 2756011401054642426}
-  m_Layer: 0
+  - component: {fileID: 1885845487388077250}
+  m_Layer: 11
   m_Name: LLeg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1318,6 +1392,32 @@ MonoBehaviour:
   m_Length: 1.9568107
   m_ChildTransform: {fileID: 2756011401342452582}
   m_AttachedIK: {fileID: 2756011399574088088}
+--- !u!61 &1885845487388077250
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011401054642428}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.91, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.11, y: 1.36}
+  m_EdgeRadius: 0
 --- !u!1 &2756011401066772495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,7 +1583,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011401143541094}
   - component: {fileID: 2756011401143541095}
-  m_Layer: 0
+  - component: {fileID: 142405201394834166}
+  m_Layer: 11
   m_Name: Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1521,6 +1622,32 @@ MonoBehaviour:
   m_Length: 1.0000007
   m_ChildTransform: {fileID: 2756011399387046137}
   m_AttachedIK: {fileID: 0}
+--- !u!61 &142405201394834166
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011401143541113}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.13, y: -0.32}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.1, y: 1.82}
+  m_EdgeRadius: 0
 --- !u!1 &2756011401280206488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,7 +1706,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011401342452582}
   - component: {fileID: 2756011401342452583}
-  m_Layer: 0
+  - component: {fileID: 9189255509423258537}
+  m_Layer: 11
   m_Name: LLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1617,6 +1745,32 @@ MonoBehaviour:
   m_Length: 2.131611
   m_ChildTransform: {fileID: 2756011400617915401}
   m_AttachedIK: {fileID: 2756011399574088088}
+--- !u!61 &9189255509423258537
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011401342452601}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1.22, y: -0.19}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.87, y: 1.3}
+  m_EdgeRadius: 0
 --- !u!1 &2756011401350907785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,7 +1781,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011401350907894}
   - component: {fileID: 2756011401350907895}
-  m_Layer: 0
+  - component: {fileID: 3392966530111023887}
+  m_Layer: 11
   m_Name: RLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1665,3 +1820,29 @@ MonoBehaviour:
   m_Length: 2.1316106
   m_ChildTransform: {fileID: 2756011399378539627}
   m_AttachedIK: {fileID: 2756011399768985763}
+--- !u!61 &3392966530111023887
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011401350907785}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1.34, y: -0.17}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.84, y: 1.15}
+  m_EdgeRadius: 0

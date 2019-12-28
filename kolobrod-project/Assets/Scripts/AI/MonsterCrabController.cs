@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Anima2D;
 using UniRx;
 using UniRx.Triggers;
@@ -16,6 +18,7 @@ namespace AI
 
 		private readonly CompositeDisposable _handlers = new CompositeDisposable();
 		private IDisposable _timerHandler;
+		private IDisposable _playerHandler;
 
 		private PlayerCharacterController _player;
 
@@ -24,6 +27,7 @@ namespace AI
 		private int _groundId;
 		private int _characterId;
 		private int _containerId;
+		private int _playerId;
 
 		private bool _aggred;
 
@@ -38,6 +42,11 @@ namespace AI
 
 		private static readonly int IsWalk = Animator.StringToHash("IsWalk");
 		private static readonly int Attack = Animator.StringToHash("Attack");
+
+		private readonly List<Collider2D> _overlapped = new List<Collider2D>();
+
+		private int _playerMask;
+		private ContactFilter2D _contactFilter2D;
 
 #pragma warning disable 649
 		[SerializeField] private Rigidbody2D _container;
@@ -55,6 +64,10 @@ namespace AI
 			_groundId = LayerMask.NameToLayer("Ground");
 			_characterId = LayerMask.NameToLayer("Character");
 			_containerId = LayerMask.NameToLayer("Container");
+			_playerId = LayerMask.NameToLayer("Player");
+
+			_playerMask = LayerMask.GetMask("Player");
+			_contactFilter2D = new ContactFilter2D {useTriggers = true, useLayerMask = true, layerMask = _playerMask};
 
 			_transform = transform;
 			_animator = GetComponent<Animator>();
@@ -80,10 +93,7 @@ namespace AI
 
 			if (!_player)
 			{
-				if (Mathf.Abs(_velocity) > 0)
-				{
-					_velocity = 0;
-				}
+				_velocity = 0;
 
 				if (_isWalk)
 				{
@@ -92,7 +102,21 @@ namespace AI
 				}
 
 				_player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerCharacterController>();
-				_playerTransform = _player != null ? _player.transform : null;
+				if (_player != null)
+				{
+					Assert.IsNull(_playerTransform);
+					Assert.IsNull(_playerHandler);
+					_playerTransform = _player.transform;
+					_playerHandler = _player.OnDestroyAsObservable().First().Subscribe(unit =>
+					{
+						_handlers.Remove(_playerHandler);
+						_playerHandler = null;
+						_player = null;
+						_playerTransform = null;
+					});
+					_handlers.Add(_playerHandler);
+				}
+
 				return;
 			}
 
@@ -108,7 +132,7 @@ namespace AI
 				AttackPlayer();
 			}
 
-			if (_isAttack || _player.IsDead && magnitude <= 0.1f)
+			if (_isAttack || _player.IsDead)
 			{
 				_velocity = 0;
 			}
@@ -167,10 +191,41 @@ namespace AI
 
 		public void OnAttack()
 		{
-			if (Mathf.Abs(_playerTransform.position.x - _transform.position.x) <= _attackMaxDistance)
+			if (!_player) return;
+
+			var touchingPart = _rigidBodies.FirstOrDefault(rb => rb.IsTouchingLayers(_playerMask));
+			if (touchingPart == null) return;
+
+			var c = touchingPart.GetComponent<Collider2D>();
+			Physics2D.OverlapCollider(c, _contactFilter2D, _overlapped);
+
+			var points = _overlapped.Select(d =>
 			{
-				_player.Damage(_damage);
+				var rc = new Rect
+				{
+					min = new Vector2(
+						Mathf.Max(d.bounds.min.x, c.bounds.min.x),
+						Mathf.Max(d.bounds.min.y, c.bounds.min.y)
+					),
+					max = new Vector2(
+						Mathf.Min(d.bounds.max.x, c.bounds.max.x),
+						Mathf.Min(d.bounds.max.y, c.bounds.max.y)
+					)
+				};
+				return rc.center;
+			}).ToArray();
+
+			var x = 0f;
+			var y = 0f;
+			foreach (var pt in points)
+			{
+				x += pt.x;
+				y += pt.y;
 			}
+
+			_player.Damage(_damage, points.Length > 0
+				? new Vector2(x / points.Length, y / points.Length)
+				: (Vector2?) null);
 		}
 
 		public void Die()
