@@ -193,39 +193,42 @@ namespace AI
 		{
 			if (!_player) return;
 
-			var touchingPart = _rigidBodies.FirstOrDefault(rb => rb.IsTouchingLayers(_playerMask));
-			if (touchingPart == null) return;
-
-			var c = touchingPart.GetComponent<Collider2D>();
-			Physics2D.OverlapCollider(c, _contactFilter2D, _overlapped);
-
-			var points = _overlapped.Select(d =>
-			{
-				var rc = new Rect
-				{
-					min = new Vector2(
-						Mathf.Max(d.bounds.min.x, c.bounds.min.x),
-						Mathf.Max(d.bounds.min.y, c.bounds.min.y)
-					),
-					max = new Vector2(
-						Mathf.Min(d.bounds.max.x, c.bounds.max.x),
-						Mathf.Min(d.bounds.max.y, c.bounds.max.y)
-					)
-				};
-				return rc.center;
-			}).ToArray();
+			var touchingParts = _rigidBodies.Where(rb => rb.IsTouchingLayers(_playerMask)).ToArray();
+			if (touchingParts.Length <= 0) return;
 
 			var x = 0f;
 			var y = 0f;
-			foreach (var pt in points)
+			var numPoints = 0;
+			foreach (var touchingPart in touchingParts)
 			{
-				x += pt.x;
-				y += pt.y;
+				var c = touchingPart.GetComponent<Collider2D>();
+				Physics2D.OverlapCollider(c, _contactFilter2D, _overlapped);
+
+				var points = _overlapped.Select(d =>
+				{
+					var rc = new Rect
+					{
+						min = new Vector2(
+							Mathf.Max(d.bounds.min.x, c.bounds.min.x),
+							Mathf.Max(d.bounds.min.y, c.bounds.min.y)
+						),
+						max = new Vector2(
+							Mathf.Min(d.bounds.max.x, c.bounds.max.x),
+							Mathf.Min(d.bounds.max.y, c.bounds.max.y)
+						)
+					};
+					return rc.center;
+				}).ToArray();
+
+				numPoints += points.Length;
+				foreach (var pt in points)
+				{
+					x += pt.x;
+					y += pt.y;
+				}
 			}
 
-			_player.Damage(_damage, points.Length > 0
-				? new Vector2(x / points.Length, y / points.Length)
-				: (Vector2?) null);
+			_player.Damage(_damage, numPoints > 0 ? new Vector2(x / numPoints, y / numPoints) : (Vector2?) null);
 		}
 
 		public void Die()

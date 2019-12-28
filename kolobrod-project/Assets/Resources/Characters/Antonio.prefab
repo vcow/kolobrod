@@ -751,7 +751,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
+  m_Mass: 75
   m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -774,7 +774,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 7
   _armRotationAxis: {fileID: 2756011399844787892}
-  _health: 1000
+  _health:
+    value: 1000
   _bloodSplatPrefab: {fileID: 3365422414632512832, guid: eca1fb28482e8f942b0eab44f9232cfe,
     type: 3}
 --- !u!114 &370879333853638076

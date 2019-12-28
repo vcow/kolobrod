@@ -1,3 +1,4 @@
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,7 +27,7 @@ namespace AI
 #pragma warning disable 649
 		[SerializeField] private float _speed = 5;
 		[SerializeField] private Transform _armRotationAxis;
-		[SerializeField] private float _health = 1000f;
+		[SerializeField] private FloatReactiveProperty _health;
 		[SerializeField] private GameObject _bloodSplatPrefab;
 #pragma warning restore 649
 
@@ -42,7 +43,7 @@ namespace AI
 		{
 			if (context.phase != InputActionPhase.Performed) return;
 			var value = context.ReadValue<Vector2>();
-			_velocity = value.x * _speed;
+			_velocity = IsDead ? 0 : value.x * _speed;
 		}
 
 		private void FixedUpdate()
@@ -66,7 +67,8 @@ namespace AI
 
 		public void OnFire(InputAction.CallbackContext context)
 		{
-			if (context.phase != InputActionPhase.Performed) return;
+			if (context.phase != InputActionPhase.Performed || IsDead) return;
+
 			var value = context.ReadValue<Vector2>();
 			var axisPosition = _armRotationAxis.position;
 			var worldPosition = _cam.ScreenToWorldPoint(new Vector3(value.x, value.y, axisPosition.z));
@@ -83,11 +85,11 @@ namespace AI
 			_shotAng = ang;
 		}
 
-		public bool IsDead => _health <= 0;
+		public bool IsDead => _health.Value <= 0;
 
 		public void Damage(float damage, Vector2? point)
 		{
-			_health -= damage;
+			_health.SetValueAndForceNotify(_health.Value - damage);
 			if (damage > 0)
 			{
 				_animator.SetTrigger(Hit);
@@ -96,9 +98,21 @@ namespace AI
 			if (point.HasValue && _bloodSplatPrefab != null)
 			{
 				var blood = Instantiate(_bloodSplatPrefab, point.Value, Quaternion.identity);
-				if (point.Value.x < _transform.position.x) blood.transform.localScale = new Vector3(-1, 1, 1);
+				if (point.Value.x < _transform.position.x)
+				{
+					var s = blood.transform.localScale;
+					blood.transform.localScale = new Vector3(s.x * -1, s.y, s.z);
+				}
+
 				Destroy(blood, 2);
 			}
+
+			if (_health.Value <= 0)
+			{
+				_animator.SetFloat(WeaponUp, 0);
+			}
 		}
+
+		public IReadOnlyReactiveProperty<float> Health => _health;
 	}
 }
