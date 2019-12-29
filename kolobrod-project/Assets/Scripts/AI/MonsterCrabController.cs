@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anima2D;
+using Common;
+using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Assertions;
 
 namespace AI
@@ -51,6 +54,8 @@ namespace AI
 		private int _playerMask;
 		private ContactFilter2D _contactFilter2D;
 
+		private float _initialHealth;
+
 #pragma warning disable 649
 		[SerializeField] private Rigidbody2D _container;
 		[SerializeField] private float _aggressDistance;
@@ -60,6 +65,10 @@ namespace AI
 		[SerializeField] private float _rechargeTime;
 		[SerializeField] private float _damage;
 		[SerializeField] private FloatReactiveProperty _health;
+		[SerializeField] private ParticleSystem _smog;
+		[SerializeField] private GameObject _finalExplosionPrefab;
+		[SerializeField] private float _decompositionDuration = 3f;
+		[SerializeField] private SpriteMeshInstance _meshInstance;
 #pragma warning restore 649
 
 		private void Start()
@@ -69,6 +78,8 @@ namespace AI
 			_containerId = LayerMask.NameToLayer("Container");
 			_playerId = LayerMask.NameToLayer("Player");
 			_ammoId = LayerMask.NameToLayer("Ammo");
+
+			_initialHealth = _health.Value;
 
 			_playerMask = LayerMask.GetMask("Player");
 			_contactFilter2D = new ContactFilter2D {useTriggers = true, useLayerMask = true, layerMask = _playerMask};
@@ -173,7 +184,20 @@ namespace AI
 				var ammo = c.GetComponent<AmmoController>();
 				_health.SetValueAndForceNotify(_health.Value - ammo.Damage);
 
+				UpdateSmog();
 				if (_health.Value <= 0) Die();
+			}
+		}
+
+		private void UpdateSmog()
+		{
+			var damagePercent = 1f - Mathf.Clamp01(_health.Value / _initialHealth);
+			if (damagePercent > 0.3f)
+			{
+				if (!_smog.isPlaying) _smog.Play(true);
+
+				var e = _smog.emission;
+				e.rateOverTime = 25 * (damagePercent - 0.3f) / 0.7f;
 			}
 		}
 
@@ -219,19 +243,13 @@ namespace AI
 
 				var points = _overlapped.Select(d =>
 				{
-					var rc = new Rect
+					if (c.bounds.Intersection(d.bounds, out var intersection))
 					{
-						min = new Vector2(
-							Mathf.Max(d.bounds.min.x, c.bounds.min.x),
-							Mathf.Max(d.bounds.min.y, c.bounds.min.y)
-						),
-						max = new Vector2(
-							Mathf.Min(d.bounds.max.x, c.bounds.max.x),
-							Mathf.Min(d.bounds.max.y, c.bounds.max.y)
-						)
-					};
-					return rc.center;
-				}).ToArray();
+						return (Vector2?) intersection.center;
+					}
+
+					return null;
+				}).Where(v => v.HasValue).Select(v => v.Value).ToArray();
 
 				numPoints += points.Length;
 				foreach (var pt in points)
@@ -250,6 +268,7 @@ namespace AI
 
 			_isDead = true;
 			transform.SetParent(null, true);
+			_smog.transform.SetParent(null, true);
 			Destroy(_container.gameObject);
 
 			_animator.enabled = false;
@@ -265,6 +284,19 @@ namespace AI
 			{
 				limb.gameObject.SetActive(false);
 			}
+
+			DOTween.To(() => Color.white, value => _meshInstance.color = value, Color.grey, 3f)
+				.OnComplete(() =>
+				{
+					_smog.GetComponent<PositionConstraint>().constraintActive = false;
+					_smog.Stop(true);
+					Destroy(_smog.gameObject, 15f);
+
+					var explosion = Instantiate(_finalExplosionPrefab, _smog.transform.position, Quaternion.identity);
+					Destroy(explosion, 3f);
+
+					Destroy(gameObject);
+				});
 		}
 	}
 }

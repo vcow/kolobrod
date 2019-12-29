@@ -85,3 +85,5 @@ MonoBehaviour:
   _damage: 5
   _power: 15
   _radius: 2
+  _hitSplashPrefab: {fileID: 7725884699935286450, guid: 51a826b52a675634dbeb1961482970f8,
+    type: 3}
