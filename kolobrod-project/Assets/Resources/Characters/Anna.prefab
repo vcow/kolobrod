@@ -1374,6 +1374,9 @@ MonoBehaviour:
   _health:
     value: 1000
   _bloodSplatPrefab: {fileID: 0}
+  _weaponConnectionPoint: {fileID: 6232354458774758033}
+  _defaultWeaponPrefab: {fileID: 4429504333536477002, guid: f0c15f9642b0ff64980e75ffde8eb04d,
+    type: 3}
 --- !u!50 &4836726297452450798
 Rigidbody2D:
   serializedVersion: 4

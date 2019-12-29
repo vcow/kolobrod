@@ -5,10 +5,21 @@ namespace AI
 	[DisallowMultipleComponent]
 	public abstract class WeaponController : MonoBehaviour
 	{
-		[SerializeField] protected float _damage;
+		private float timestamp;
+
 		[SerializeField] protected float _rechargeTime;
 		[SerializeField] protected GameObject _ammoPrefab;
+		[SerializeField] protected Transform _spawnPoint;
 
-		public abstract bool Shut(Vector2 targetPoint);
+		public bool Shut(Vector2 targetPoint)
+		{
+			if (!WeaponIsReady) return false;
+			timestamp = Time.time + _rechargeTime;
+			return DoShut(targetPoint);
+		}
+
+		public bool WeaponIsReady => Time.time > timestamp;
+
+		protected abstract bool DoShut(Vector2 targetPoint);
 	}
 }

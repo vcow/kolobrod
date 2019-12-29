@@ -24,6 +24,10 @@ namespace AI
 
 		private WeaponController _weapon;
 
+		private readonly Subject<Vector2> _shutStream = new Subject<Vector2>();
+
+		private readonly CompositeDisposable _handlers = new CompositeDisposable();
+
 #pragma warning disable 649
 		[SerializeField] private float _speed = 5;
 		[SerializeField] private Transform _armRotationAxis;
@@ -39,6 +43,21 @@ namespace AI
 			_rigidBody = GetComponent<Rigidbody2D>();
 			_transform = transform;
 			_cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+			_handlers.Add(_shutStream.ThrottleFrame(1).Subscribe(OnShut));
+		}
+
+		private void OnDestroy()
+		{
+			_handlers.Dispose();
+		}
+
+		private void OnShut(Vector2 worldPosition)
+		{
+			if (_weapon && _weapon.Shut(worldPosition))
+			{
+				_animator.SetTrigger(Recoil);
+			}
 		}
 
 		private void Start()
@@ -78,11 +97,23 @@ namespace AI
 
 		public void OnFire(InputAction.CallbackContext context)
 		{
-			if (context.phase != InputActionPhase.Performed || IsDead) return;
+			if (context.phase != InputActionPhase.Performed ||
+			    _weapon == null || !_weapon.WeaponIsReady ||
+			    IsDead)
+			{
+				return;
+			}
 
 			var value = context.ReadValue<Vector2>();
 			var axisPosition = _armRotationAxis.position;
 			var worldPosition = _cam.ScreenToWorldPoint(new Vector3(value.x, value.y, axisPosition.z));
+
+			if (axisPosition.x > worldPosition.x && !_invert ||
+			    axisPosition.x <= worldPosition.x && _invert)
+			{
+				return;
+			}
+
 			var vec = worldPosition - axisPosition;
 			var ang = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
 			if (Mathf.Abs(ang) > 90f)
@@ -92,10 +123,7 @@ namespace AI
 			}
 
 			_animator.SetFloat(WeaponUp, Mathf.Clamp01((ang + 90f) / 180f));
-			if (_weapon && _weapon.Shut(worldPosition))
-			{
-				_animator.SetTrigger(Recoil);
-			}
+			_shutStream.OnNext(worldPosition);
 		}
 
 		public bool IsDead => _health.Value <= 0;

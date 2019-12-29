@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 namespace AI
@@ -9,8 +8,13 @@ namespace AI
 		[SerializeField] private ParticleSystem _fireFx;
 #pragma warning restore 649
 
-		public override bool Shut(Vector2 targetPoint)
+		protected override bool DoShut(Vector2 targetPoint)
 		{
+			var bullet = Instantiate(_ammoPrefab).GetComponent<AmmoController>();
+			var spawnPosition = _spawnPoint.position;
+			bullet.transform.position = spawnPosition;
+			bullet.Body.AddForce((targetPoint - (Vector2) spawnPosition).normalized * 10f, ForceMode2D.Impulse);
+
 			if (_fireFx.isPlaying) _fireFx.Stop(true);
 			_fireFx.Play(true);
 			return true;

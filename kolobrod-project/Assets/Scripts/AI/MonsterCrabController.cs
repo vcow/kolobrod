@@ -28,6 +28,7 @@ namespace AI
 		private int _characterId;
 		private int _containerId;
 		private int _playerId;
+		private int _ammoId;
 
 		private bool _aggred;
 
@@ -39,9 +40,11 @@ namespace AI
 		private bool _isWalk;
 		private bool _invert;
 		private bool _isAttack;
+		private bool _isDead;
 
 		private static readonly int IsWalk = Animator.StringToHash("IsWalk");
 		private static readonly int Attack = Animator.StringToHash("Attack");
+		private static readonly int Hit = Animator.StringToHash("Hit");
 
 		private readonly List<Collider2D> _overlapped = new List<Collider2D>();
 
@@ -56,7 +59,7 @@ namespace AI
 		[SerializeField] private float _speed;
 		[SerializeField] private float _rechargeTime;
 		[SerializeField] private float _damage;
-		[SerializeField] private float _health;
+		[SerializeField] private FloatReactiveProperty _health;
 #pragma warning restore 649
 
 		private void Start()
@@ -65,6 +68,7 @@ namespace AI
 			_characterId = LayerMask.NameToLayer("Character");
 			_containerId = LayerMask.NameToLayer("Container");
 			_playerId = LayerMask.NameToLayer("Player");
+			_ammoId = LayerMask.NameToLayer("Ammo");
 
 			_playerMask = LayerMask.GetMask("Player");
 			_contactFilter2D = new ContactFilter2D {useTriggers = true, useLayerMask = true, layerMask = _playerMask};
@@ -89,7 +93,7 @@ namespace AI
 
 		private void FixedUpdate()
 		{
-			if (!_landing) return;
+			if (!_landing || _isDead) return;
 
 			if (!_player)
 			{
@@ -162,6 +166,15 @@ namespace AI
 		private void OnCollide(Collider2D c)
 		{
 			_landing |= c.gameObject.layer == _groundId;
+
+			if (c.gameObject.layer == _ammoId)
+			{
+				_animator.SetTrigger(Hit);
+				var ammo = c.GetComponent<AmmoController>();
+				_health.SetValueAndForceNotify(_health.Value - ammo.Damage);
+
+				if (_health.Value <= 0) Die();
+			}
 		}
 
 		private void AttackPlayer()
@@ -233,6 +246,9 @@ namespace AI
 
 		public void Die()
 		{
+			Assert.IsFalse(_isDead);
+
+			_isDead = true;
 			transform.SetParent(null, true);
 			Destroy(_container.gameObject);
 
