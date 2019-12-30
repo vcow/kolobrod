@@ -858,6 +858,7 @@ GameObject:
   - component: {fileID: 8331979805247469618}
   - component: {fileID: 8331979805247469629}
   - component: {fileID: 8331979805247469628}
+  - component: {fileID: 122817077879078244}
   m_Layer: 9
   m_Name: MonsterCrab
   m_TagString: Untagged
@@ -928,6 +929,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &122817077879078244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8331979805247469631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1ba525d6f9437fa0b9474135edafcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _monsterInstance: {fileID: 1641825236036236193}
 --- !u!1 &8331979805264290605
 GameObject:
   m_ObjectHideFlags: 0

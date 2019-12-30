@@ -3,6 +3,7 @@ using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using Zenject;
 
 namespace AI
 {
@@ -13,6 +14,8 @@ namespace AI
 		[SerializeField] private GameObject _monsterPrefab;
 		[SerializeField] private float _initialScale;
 		[SerializeField] private Vector2 _initialForce;
+
+		[Inject] private readonly DiContainer _container;
 #pragma warning restore 649
 
 		private void Start()
@@ -29,6 +32,7 @@ namespace AI
 		public void Spawn()
 		{
 			var monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
+			_container?.Inject(monster);
 			monster.transform.localScale = new Vector3(_initialScale, _initialScale, _initialScale);
 			if (_initialScale < 1)
 			{

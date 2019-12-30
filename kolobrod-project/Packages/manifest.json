@@ -9,6 +9,7 @@
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.2.9",
     "com.unity.ugui": "1.0.0",
+    "vcow.base.audio-manager": "https://github.com/vcow/lib-audio-manager.git#1.0.0",
     "vcow.base.logicality": "https://github.com/vcow/lib-logicality.git#1.0.0",
     "vcow.base.screen-locker": "https://github.com/vcow/lib-screen-locker.git#1.0.0",
     "vcow.helpers.touch-helper": "https://github.com/vcow/lib-touch-helper.git#1.0.0",
@@ -45,6 +46,10 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "lock": {
+    "vcow.base.audio-manager": {
+      "revision": "1.0.0",
+      "hash": "de9a5cde5d0f24755906d9e0bd1c57b2952cde41"
+    },
     "vcow.base.logicality": {
       "revision": "1.0.0",
       "hash": "c8e17275f202e601c78f0943cd50f5659f203684"
