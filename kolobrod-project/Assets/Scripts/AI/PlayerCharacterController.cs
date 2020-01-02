@@ -1,6 +1,5 @@
 using UniRx;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace AI
 {
@@ -21,6 +20,7 @@ namespace AI
 		private static readonly int Hit = Animator.StringToHash("Hit");
 
 		private float _velocity;
+		private Vector3 _aimPoint;
 
 		private WeaponController _weapon;
 
@@ -69,11 +69,9 @@ namespace AI
 			}
 		}
 
-		public void OnWalk(InputAction.CallbackContext context)
+		public void Walk(Vector2 direction)
 		{
-			if (context.phase != InputActionPhase.Performed) return;
-			var value = context.ReadValue<Vector2>();
-			_velocity = IsDead ? 0 : value.x * _speed;
+			_velocity = IsDead ? 0 : direction.x * _speed;
 		}
 
 		private void FixedUpdate()
@@ -95,26 +93,23 @@ namespace AI
 			_rigidBody.velocity = new Vector2(_velocity, _rigidBody.velocity.y);
 		}
 
-		public void OnFire(InputAction.CallbackContext context)
+		public void Aim(Vector2 point)
 		{
-			if (context.phase != InputActionPhase.Performed ||
-			    _weapon == null || !_weapon.WeaponIsReady ||
-			    IsDead)
+			if (_weapon == null || !_weapon.WeaponIsReady || IsDead)
 			{
 				return;
 			}
 
-			var value = context.ReadValue<Vector2>();
 			var axisPosition = _armRotationAxis.position;
-			var worldPosition = _cam.ScreenToWorldPoint(new Vector3(value.x, value.y, axisPosition.z));
+			_aimPoint = _cam.ScreenToWorldPoint(new Vector3(point.x, point.y, axisPosition.z));
 
-			if (axisPosition.x > worldPosition.x && !_invert ||
-			    axisPosition.x <= worldPosition.x && _invert)
+			if (axisPosition.x > _aimPoint.x && !_invert ||
+			    axisPosition.x <= _aimPoint.x && _invert)
 			{
 				return;
 			}
 
-			var vec = worldPosition - axisPosition;
+			var vec = _aimPoint - axisPosition;
 			var ang = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
 			if (Mathf.Abs(ang) > 90f)
 			{
@@ -123,7 +118,16 @@ namespace AI
 			}
 
 			_animator.SetFloat(WeaponUp, Mathf.Clamp01((ang + 90f) / 180f));
-			_shutStream.OnNext(worldPosition);
+		}
+
+		public void Fire()
+		{
+			if (_weapon == null || !_weapon.WeaponIsReady || IsDead)
+			{
+				return;
+			}
+
+			_shutStream.OnNext(_aimPoint);
 		}
 
 		public bool IsDead => _health.Value <= 0;
