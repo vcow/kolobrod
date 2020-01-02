@@ -1,4 +1,5 @@
 using Base.ScreenLocker;
+using GameScene.Signals;
 using Zenject;
 
 namespace GameScene
@@ -11,6 +12,7 @@ namespace GameScene
 
 		public override void InstallBindings()
 		{
+			Container.DeclareSignal<MoveSignal>();
 		}
 
 		public override void Start()

@@ -1338,7 +1338,7 @@ GameObject:
   - component: {fileID: 6232354459658504375}
   - component: {fileID: 516338467334555866}
   - component: {fileID: 4836726297452450798}
-  - component: {fileID: 2809892374989879945}
+  - component: {fileID: 6762057123605981366}
   m_Layer: 9
   m_Name: Anna
   m_TagString: Player
@@ -1405,6 +1405,7 @@ MonoBehaviour:
     value: 1000
   _bloodSplatPrefab: {fileID: 0}
   _weaponConnectionPoint: {fileID: 2633720434883048790}
+  _audioListenerConnectionPoint: {fileID: 6232354458570379560}
   _defaultWeaponPrefab: {fileID: 4429504333536477002, guid: f0c15f9642b0ff64980e75ffde8eb04d,
     type: 3}
 --- !u!50 &4836726297452450798
@@ -1428,8 +1429,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &2809892374989879945
-BoxCollider2D:
+--- !u!70 &6762057123605981366
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1441,19 +1442,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.62}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.38, y: 10.19}
-  m_EdgeRadius: 0
+  m_Offset: {x: -0.05234027, y: 0.5862093}
+  m_Size: {x: 2.3633113, y: 9.91877}
+  m_Direction: 0
 --- !u!1 &6232354459660246006
 GameObject:
   m_ObjectHideFlags: 0

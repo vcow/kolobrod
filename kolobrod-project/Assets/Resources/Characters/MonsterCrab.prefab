@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1641825236036236192}
   - component: {fileID: 1641825236036236195}
   - component: {fileID: 1641825236036236194}
+  - component: {fileID: 7652988798753507448}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -81,6 +82,102 @@ MonoBehaviour:
     type: 3}
   _decompositionDuration: 3
   _meshInstance: {fileID: 8331979803996666104}
+--- !u!82 &7652988798753507448
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641825236036236193}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 20
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.0037422
+      inSlope: -1.7416953
+      outSlope: -1.7416953
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.086513996
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.055555556
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1818360608 &6235782025227103026
 PositionConstraint:
   m_ObjectHideFlags: 0
@@ -259,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.760397
+  m_Length: 0.76039696
   m_ChildTransform: {fileID: 8331979804985965069}
   m_AttachedIK: {fileID: 8331979804862347025}
 --- !u!70 &8331979803628839567
@@ -856,9 +953,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8331979805247469618}
-  - component: {fileID: 8331979805247469629}
   - component: {fileID: 8331979805247469628}
   - component: {fileID: 122817077879078244}
+  - component: {fileID: 8629429715161916965}
   m_Layer: 9
   m_Name: MonsterCrab
   m_TagString: Untagged
@@ -882,32 +979,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &8331979805247469629
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8331979805247469631}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.08}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 6.15, y: 3.14}
-  m_EdgeRadius: 0
 --- !u!50 &8331979805247469628
 Rigidbody2D:
   serializedVersion: 4
@@ -942,6 +1013,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monsterInstance: {fileID: 1641825236036236193}
+--- !u!70 &8629429715161916965
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8331979805247469631}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0573478, y: -0.17205574}
+  m_Size: {x: 6.115842, y: 3.1335154}
+  m_Direction: 1
 --- !u!1 &8331979805264290605
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,7 +1077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.92527974
+  m_Length: 0.9252796
   m_ChildTransform: {fileID: 8331979803561787791}
   m_AttachedIK: {fileID: 8331979804895444195}
 --- !u!70 &8331979805264290592
@@ -1170,16 +1257,24 @@ PrefabInstance:
       value: 3.2241004
       objectReference: {fileID: 0}
     - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
-      propertyPath: InitialModule.startLifetime.minScalar
-      value: 5
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
-      propertyPath: playOnAwake
-      value: 0
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].value
@@ -1200,14 +1295,6 @@ PrefabInstance:
     - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.a
       value: 0.7254902
-      objectReference: {fileID: 0}
-    - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
-      propertyPath: InitialModule.startSpeed.minScalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}

@@ -662,9 +662,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2756011400001885289}
   - component: {fileID: 2756011400001885270}
-  - component: {fileID: 3855523473852003703}
   - component: {fileID: 3793132386543641530}
   - component: {fileID: -8790650244622553360}
+  - component: {fileID: 7387708597654892463}
   m_Layer: 9
   m_Name: Antonio
   m_TagString: Player
@@ -712,32 +712,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!61 &3855523473852003703
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2756011400001885288}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.64}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.87, y: 9.95}
-  m_EdgeRadius: 0
 --- !u!50 &3793132386543641530
 Rigidbody2D:
   serializedVersion: 4
@@ -778,8 +752,25 @@ MonoBehaviour:
   _bloodSplatPrefab: {fileID: 3365422414632512832, guid: eca1fb28482e8f942b0eab44f9232cfe,
     type: 3}
   _weaponConnectionPoint: {fileID: 2756011400985218486}
+  _audioListenerConnectionPoint: {fileID: 2756011399412792181}
   _defaultWeaponPrefab: {fileID: 4429504333536477002, guid: f0c15f9642b0ff64980e75ffde8eb04d,
     type: 3}
+--- !u!70 &7387708597654892463
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756011400001885288}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.10110569, y: 0.70774174}
+  m_Size: {x: 2.5221133, y: 9.93774}
+  m_Direction: 0
 --- !u!1 &2756011400035086607
 GameObject:
   m_ObjectHideFlags: 0

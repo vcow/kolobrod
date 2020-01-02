@@ -1,5 +1,10 @@
+using Base.AudioManager;
+using Common;
+using GameScene.Signals;
+using Helpers.TouchHelper;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace AI
 {
@@ -20,7 +25,7 @@ namespace AI
 		private static readonly int Hit = Animator.StringToHash("Hit");
 
 		private float _velocity;
-		private Vector3 _aimPoint;
+		private bool _isNavigate;
 
 		private WeaponController _weapon;
 
@@ -34,7 +39,13 @@ namespace AI
 		[SerializeField] private FloatReactiveProperty _health;
 		[SerializeField] private GameObject _bloodSplatPrefab;
 		[SerializeField] private Transform _weaponConnectionPoint;
+		[SerializeField] private Transform _audioListenerConnectionPoint;
 		[SerializeField] private GameObject _defaultWeaponPrefab;
+
+		[Inject] private readonly DiContainer _container;
+		[Inject] private readonly SignalBus _signalBus;
+		[Inject] private readonly AudioListenerController _audioListenerController;
+		[Inject] private readonly IAudioManager _audioManager;
 #pragma warning restore 649
 
 		private void Awake()
@@ -49,6 +60,7 @@ namespace AI
 
 		private void OnDestroy()
 		{
+			_signalBus.Unsubscribe<MoveSignal>(OnMove);
 			_handlers.Dispose();
 		}
 
@@ -62,14 +74,49 @@ namespace AI
 
 		private void Start()
 		{
+			_signalBus.Subscribe<MoveSignal>(OnMove);
+			_audioListenerController.Pursued = _audioListenerConnectionPoint;
+
 			if (_defaultWeaponPrefab)
 			{
-				_weapon = Instantiate(_defaultWeaponPrefab, _weaponConnectionPoint)
-					.GetComponent<WeaponController>();
+				_weapon = _container.InstantiatePrefabForComponent<WeaponController>(_defaultWeaponPrefab,
+					_weaponConnectionPoint);
 			}
 		}
 
-		public void Walk(Vector2 direction)
+		private void Update()
+		{
+			Touch touch;
+			if (_isNavigate && TouchHelper.GetTouch(out touch, 1) && touch.phase == TouchPhase.Began ||
+			    !TouchHelper.IsPointerOverUiObject() && TouchHelper.GetTouch(out touch) &&
+			    touch.phase == TouchPhase.Began)
+			{
+				Fire(touch.position);
+			}
+
+#if UNITY_EDITOR
+			if (Input.GetButton("Horizontal"))
+			{
+				Walk(Input.GetAxis("Horizontal") * Vector2.right);
+			}
+			else if (Input.GetButton("Vertical"))
+			{
+				Walk(Input.GetAxis("Vertical") * Vector2.up);
+			}
+			else if (!_isNavigate)
+			{
+				Walk(Vector2.zero);
+			}
+#endif
+		}
+
+		private void OnMove(MoveSignal signal)
+		{
+			_isNavigate = signal.Direction != Vector2.zero;
+			Walk(signal.Direction);
+		}
+
+		private void Walk(Vector2 direction)
 		{
 			_velocity = IsDead ? 0 : direction.x * _speed;
 		}
@@ -93,23 +140,23 @@ namespace AI
 			_rigidBody.velocity = new Vector2(_velocity, _rigidBody.velocity.y);
 		}
 
-		public void Aim(Vector2 point)
+		private void Fire(Vector2 point)
 		{
-			if (_weapon == null || !_weapon.WeaponIsReady || IsDead)
+			if (!_weapon || !_weapon.WeaponIsReady || IsDead)
 			{
 				return;
 			}
 
 			var axisPosition = _armRotationAxis.position;
-			_aimPoint = _cam.ScreenToWorldPoint(new Vector3(point.x, point.y, axisPosition.z));
+			var worldPosition = _cam.ScreenToWorldPoint(new Vector3(point.x, point.y, axisPosition.z));
 
-			if (axisPosition.x > _aimPoint.x && !_invert ||
-			    axisPosition.x <= _aimPoint.x && _invert)
+			if (axisPosition.x > worldPosition.x && !_invert ||
+			    axisPosition.x <= worldPosition.x && _invert)
 			{
 				return;
 			}
 
-			var vec = _aimPoint - axisPosition;
+			var vec = worldPosition - axisPosition;
 			var ang = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
 			if (Mathf.Abs(ang) > 90f)
 			{
@@ -118,16 +165,7 @@ namespace AI
 			}
 
 			_animator.SetFloat(WeaponUp, Mathf.Clamp01((ang + 90f) / 180f));
-		}
-
-		public void Fire()
-		{
-			if (_weapon == null || !_weapon.WeaponIsReady || IsDead)
-			{
-				return;
-			}
-
-			_shutStream.OnNext(_aimPoint);
+			_shutStream.OnNext(worldPosition);
 		}
 
 		public bool IsDead => _health.Value <= 0;
@@ -138,6 +176,7 @@ namespace AI
 			if (damage > 0)
 			{
 				_animator.SetTrigger(Hit);
+				_audioManager.PlaySound("kick_player");
 			}
 
 			if (point.HasValue && _bloodSplatPrefab != null)

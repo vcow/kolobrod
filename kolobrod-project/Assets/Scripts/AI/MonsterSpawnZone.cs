@@ -32,7 +32,7 @@ namespace AI
 		public void Spawn()
 		{
 			var monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
-			_container?.Inject(monster);
+			_container?.InjectGameObject(monster);
 			monster.transform.localScale = new Vector3(_initialScale, _initialScale, _initialScale);
 			if (_initialScale < 1)
 			{

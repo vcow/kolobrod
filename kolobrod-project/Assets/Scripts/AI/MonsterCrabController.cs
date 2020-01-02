@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anima2D;
+using Base.AudioManager;
 using Common;
 using DG.Tweening;
 using UniRx;
@@ -9,15 +10,17 @@ using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Assertions;
+using Zenject;
 
 namespace AI
 {
-	[DisallowMultipleComponent, RequireComponent(typeof(Animator))]
+	[DisallowMultipleComponent, RequireComponent(typeof(Animator), typeof(AudioSource))]
 	public class MonsterCrabController : MonoBehaviour
 	{
 		private Rigidbody2D[] _rigidBodies;
 		private IkLimb2D[] _limbs;
 		private Animator _animator;
+		private AudioSource _audioSource;
 
 		private readonly CompositeDisposable _handlers = new CompositeDisposable();
 		private IDisposable _timerHandler;
@@ -40,9 +43,9 @@ namespace AI
 
 		private float _velocity;
 
-		private bool _isWalk;
+		private bool _walk;
 		private bool _invert;
-		private bool _isAttack;
+		private bool _attack;
 		private bool _isDead;
 
 		private static readonly int IsWalk = Animator.StringToHash("IsWalk");
@@ -55,6 +58,7 @@ namespace AI
 		private ContactFilter2D _contactFilter2D;
 
 		private float _initialHealth;
+		private int _walkSoundId;
 
 #pragma warning disable 649
 		[SerializeField] private Rigidbody2D _container;
@@ -69,7 +73,28 @@ namespace AI
 		[SerializeField] private GameObject _finalExplosionPrefab;
 		[SerializeField] private float _decompositionDuration = 3f;
 		[SerializeField] private SpriteMeshInstance _meshInstance;
+
+		[Inject] private readonly IAudioManager _audioManager;
 #pragma warning restore 649
+
+		private bool Walk
+		{
+			get => _walk;
+			set
+			{
+				if (value == _walk) return;
+				_walk = value;
+				if (_walk && _walkSoundId <= 0)
+				{
+					_walkSoundId = _audioManager.PlaySound("robot_walk", loopCount: 0, audioSource: _audioSource);
+				}
+				else if (!_walk && _walkSoundId > 0)
+				{
+					_audioManager.StopSound(_walkSoundId);
+					_walkSoundId = 0;
+				}
+			}
+		}
 
 		private void Start()
 		{
@@ -86,6 +111,7 @@ namespace AI
 
 			_transform = transform;
 			_animator = GetComponent<Animator>();
+			_audioSource = GetComponent<AudioSource>();
 
 			_rigidBodies = GetComponentsInChildren<Rigidbody2D>();
 			_limbs = GetComponentsInChildren<IkLimb2D>();
@@ -100,6 +126,7 @@ namespace AI
 		private void OnDestroy()
 		{
 			_handlers.Dispose();
+			if (_walkSoundId > 0) _audioManager.StopSound(_walkSoundId);
 		}
 
 		private void FixedUpdate()
@@ -110,9 +137,9 @@ namespace AI
 			{
 				_velocity = 0;
 
-				if (_isWalk)
+				if (Walk)
 				{
-					_isWalk = false;
+					Walk = false;
 					_animator.SetBool(IsWalk, false);
 				}
 
@@ -142,12 +169,12 @@ namespace AI
 				return;
 			}
 
-			if (!_isAttack && !_player.IsDead && magnitude <= _attackMaxDistance && magnitude > _attackMinDistance)
+			if (!_attack && !_player.IsDead && magnitude <= _attackMaxDistance && magnitude > _attackMinDistance)
 			{
 				AttackPlayer();
 			}
 
-			if (_isAttack || _player.IsDead)
+			if (_attack || _player.IsDead)
 			{
 				_velocity = 0;
 			}
@@ -158,13 +185,13 @@ namespace AI
 			}
 
 			var isWalk = Mathf.Abs(_velocity) > 0;
-			if (_isWalk != isWalk)
+			if (Walk != isWalk)
 			{
-				_isWalk = isWalk;
-				_animator.SetBool(IsWalk, _isWalk);
+				Walk = isWalk;
+				_animator.SetBool(IsWalk, Walk);
 			}
 
-			var invert = _isWalk ? _velocity > 0 : _invert;
+			var invert = Walk ? _velocity > 0 : _invert;
 			if (invert != _invert)
 			{
 				_invert = invert;
@@ -186,6 +213,8 @@ namespace AI
 
 				UpdateSmog();
 				if (_health.Value <= 0) Die();
+
+				_audioManager.PlaySound("bullet_hit");
 			}
 		}
 
@@ -205,9 +234,9 @@ namespace AI
 		{
 			Assert.IsNotNull(_player);
 			Assert.IsNull(_timerHandler);
-			Assert.IsFalse(_isAttack);
+			Assert.IsFalse(_attack);
 
-			_isAttack = true;
+			_attack = true;
 
 			var invert = _playerTransform.position.x > _transform.position.x;
 			if (invert != _invert)
@@ -221,7 +250,7 @@ namespace AI
 			{
 				_handlers.Remove(_timerHandler);
 				_timerHandler = null;
-				_isAttack = false;
+				_attack = false;
 			});
 			_handlers.Add(_timerHandler);
 		}
@@ -266,6 +295,12 @@ namespace AI
 		{
 			Assert.IsFalse(_isDead);
 
+			if (_walkSoundId > 0)
+			{
+				_audioManager.StopSound(_walkSoundId);
+				_walkSoundId = 0;
+			}
+
 			_isDead = true;
 			transform.SetParent(null, true);
 			_smog.transform.SetParent(null, true);
@@ -285,13 +320,14 @@ namespace AI
 				limb.gameObject.SetActive(false);
 			}
 
-			DOTween.To(() => Color.white, value => _meshInstance.color = value, Color.grey, 3f)
+			DOTween.To(() => Color.white, value => _meshInstance.color = value, Color.grey, _decompositionDuration)
 				.OnComplete(() =>
 				{
 					_smog.GetComponent<PositionConstraint>().constraintActive = false;
 					_smog.Stop(true);
 					Destroy(_smog.gameObject, 15f);
 
+					_audioManager.PlaySound("explosion");
 					var explosion = Instantiate(_finalExplosionPrefab, _smog.transform.position, Quaternion.identity);
 					Destroy(explosion, 3f);
 
