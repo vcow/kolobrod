@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using Common;
+using UniRx;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 namespace AI
@@ -9,9 +12,15 @@ namespace AI
 	public class CharacterSpawnZone : MonoInstaller<CharacterSpawnZone>
 	{
 		private PlayerCharacterController _character;
+		private readonly IntReactiveProperty _livesLeft = new IntReactiveProperty();
+		private readonly FloatReactiveProperty _health = new FloatReactiveProperty();
+		private readonly CompositeDisposable _handlers = new CompositeDisposable();
 
 #pragma warning disable 649
+		[SerializeField] private int _numLives;
 		[SerializeField] private Transform _spawnPosition;
+		[SerializeField] private GameObject _appearFx;
+		[SerializeField] private GameObject _disappearFx;
 
 		[Inject] private readonly AvatarType _avatarType;
 #pragma warning restore 649
@@ -23,6 +32,32 @@ namespace AI
 
 		public override void Start()
 		{
+			_livesLeft.SetValueAndForceNotify(_numLives);
+			StartCoroutine(SpawnRoutine());
+		}
+
+		private void OnDestroy()
+		{
+			_handlers.Dispose();
+		}
+
+		public int NumLives => _numLives;
+
+		public IReadOnlyReactiveProperty<int> LivesLeft => _livesLeft;
+
+		public IReadOnlyReactiveProperty<float> Health => _health;
+
+		private IEnumerator SpawnRoutine()
+		{
+			Assert.IsNull(_character);
+			Assert.IsTrue(_livesLeft.Value > 0);
+
+			var fx = Instantiate(_appearFx);
+			fx.transform.position = new Vector3(_spawnPosition.position.x, 0, 0);
+			Destroy(fx, 3f);
+
+			yield return new WaitForSeconds(0.5f);
+
 			switch (_avatarType)
 			{
 				case AvatarType.Anna:
@@ -38,6 +73,40 @@ namespace AI
 			}
 
 			_character.transform.position = new Vector3(_spawnPosition.position.x, 0, 0);
+
+			_handlers.Add(_character.CurrentHealth.Subscribe(f =>
+			{
+				_health.SetValueAndForceNotify(Mathf.Clamp01(f / _character.Health));
+				if (_character.IsDead) StartCoroutine(RespawnCharacter());
+			}));
+		}
+
+		private IEnumerator RespawnCharacter()
+		{
+			Assert.IsNotNull(_character);
+
+			var fx = Instantiate(_disappearFx);
+			fx.transform.position = _character.transform.position;
+			Destroy(fx, 3f);
+
+			_handlers.Clear();
+			Destroy(_character.gameObject, 0.3f);
+
+			_livesLeft.SetValueAndForceNotify(_livesLeft.Value - 1);
+			yield return new WaitForSeconds(2f);
+
+			if (_livesLeft.Value > 0)
+			{
+				StartCoroutine(SpawnRoutine());
+			}
+			else
+			{
+				GameOver();
+			}
+		}
+
+		private void GameOver()
+		{
 		}
 	}
 }

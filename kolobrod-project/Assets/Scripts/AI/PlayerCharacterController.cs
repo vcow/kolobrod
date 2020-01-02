@@ -33,10 +33,12 @@ namespace AI
 
 		private readonly CompositeDisposable _handlers = new CompositeDisposable();
 
+		private readonly FloatReactiveProperty _currentHealth = new FloatReactiveProperty();
+
 #pragma warning disable 649
 		[SerializeField] private float _speed = 5;
+		[SerializeField] private float _health = 1000;
 		[SerializeField] private Transform _armRotationAxis;
-		[SerializeField] private FloatReactiveProperty _health;
 		[SerializeField] private GameObject _bloodSplatPrefab;
 		[SerializeField] private Transform _weaponConnectionPoint;
 		[SerializeField] private Transform _audioListenerConnectionPoint;
@@ -50,6 +52,8 @@ namespace AI
 
 		private void Awake()
 		{
+			_currentHealth.SetValueAndForceNotify(_health);
+
 			_animator = GetComponent<Animator>();
 			_rigidBody = GetComponent<Rigidbody2D>();
 			_transform = transform;
@@ -168,11 +172,13 @@ namespace AI
 			_shutStream.OnNext(worldPosition);
 		}
 
-		public bool IsDead => _health.Value <= 0;
+		public bool IsDead => _currentHealth.Value <= 0;
 
 		public void Damage(float damage, Vector2? point)
 		{
-			_health.SetValueAndForceNotify(_health.Value - damage);
+			if (IsDead) return;
+
+			_currentHealth.SetValueAndForceNotify(_currentHealth.Value - damage);
 			if (damage > 0)
 			{
 				_animator.SetTrigger(Hit);
@@ -191,12 +197,14 @@ namespace AI
 				Destroy(blood, 2);
 			}
 
-			if (_health.Value <= 0)
+			if (_currentHealth.Value <= 0)
 			{
 				_animator.SetFloat(WeaponUp, 0);
 			}
 		}
 
-		public IReadOnlyReactiveProperty<float> Health => _health;
+		public IReadOnlyReactiveProperty<float> CurrentHealth => _currentHealth;
+
+		public float Health => _health;
 	}
 }
