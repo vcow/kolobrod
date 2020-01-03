@@ -87,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -99,7 +99,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -111,7 +111,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -125,18 +125,18 @@ TextureImporter:
       name: anna_0
       rect:
         serializedVersion: 2
-        x: 130
-        y: 803
-        width: 6
-        height: 68
+        x: 0
+        y: 0
+        width: 239
+        height: 1024
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4ba08f4de764a9145b0660361b2146b9
+      spriteID: f334e5751ebd91f47b5f8d123f01a175
       internalID: 7113669248012309142
       vertices: []
       indices: 
@@ -146,18 +146,18 @@ TextureImporter:
       name: anna_1
       rect:
         serializedVersion: 2
-        x: 152
-        y: 0
-        width: 242
-        height: 1024
+        x: 241
+        y: 585
+        width: 147
+        height: 439
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b6eb73d8e3c95a8418354ff0f6187aba
+      spriteID: 4f271562108c94c4bb976ebe497f3038
       internalID: 4642394838527890067
       vertices: []
       indices: 
@@ -167,73 +167,10 @@ TextureImporter:
       name: anna_2
       rect:
         serializedVersion: 2
-        x: 397
-        y: 549
+        x: 387
+        y: 708
         width: 105
         height: 316
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a5356619a9b2554a82477e553a2ec94
-      internalID: 7217112325130132482
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: anna_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 10
-        width: 147
-        height: 439
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5aa350a74e716cd40b5ce15e44f96490
-      internalID: 3296274971890276407
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: anna_6
-      rect:
-        serializedVersion: 2
-        x: 398
-        y: 9
-        width: 198
-        height: 481
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e19a584b58cf17e44b144912e8ff22ef
-      internalID: -6846636590754279922
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: anna_7
-      rect:
-        serializedVersion: 2
-        x: 90
-        y: 775
-        width: 57
-        height: 132
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -241,8 +178,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f5317d856cfa1594496fcbeb2710bc54
-      internalID: 6150145139308767838
+      spriteID: 75ece1fffc9456a4a9ea7bd880df5713
+      internalID: 7217112325130132482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: anna_3
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 2
+        width: 198
+        height: 480
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d26be8886f3cb34ab98be3b039a1e89
+      internalID: -5255579787727792044
       vertices: []
       indices: 
       edges: []
@@ -260,6 +218,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 637126150883189368
+  userData: 637136563147203023
   assetBundleName: 
   assetBundleVariant: 
