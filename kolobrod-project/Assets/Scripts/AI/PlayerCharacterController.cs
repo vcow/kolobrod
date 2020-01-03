@@ -1,3 +1,4 @@
+using Anima2D;
 using Base.AudioManager;
 using Common;
 using GameScene.Signals;
@@ -35,6 +36,9 @@ namespace AI
 
 		private readonly FloatReactiveProperty _currentHealth = new FloatReactiveProperty();
 
+		private SpriteMeshInstance[] _meshes;
+		private Color _color = Color.white;
+
 #pragma warning disable 649
 		[SerializeField] private float _speed = 5;
 		[SerializeField] private float _health = 1000;
@@ -60,6 +64,8 @@ namespace AI
 			_cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
 			_handlers.Add(_shutStream.ThrottleFrame(1).Subscribe(OnShut));
+
+			_meshes = GetComponentsInChildren<SpriteMeshInstance>();
 		}
 
 		private void OnDestroy()
@@ -85,6 +91,7 @@ namespace AI
 			{
 				_weapon = _container.InstantiatePrefabForComponent<WeaponController>(_defaultWeaponPrefab,
 					_weaponConnectionPoint);
+				_weapon.Color = _color;
 			}
 		}
 
@@ -206,5 +213,19 @@ namespace AI
 		public IReadOnlyReactiveProperty<float> CurrentHealth => _currentHealth;
 
 		public float Health => _health;
+
+		public Color Color
+		{
+			set
+			{
+				_color = value;
+				foreach (var mesh in _meshes)
+				{
+					mesh.color = _color;
+				}
+
+				if (_weapon) _weapon.Color = _color;
+			}
+		}
 	}
 }

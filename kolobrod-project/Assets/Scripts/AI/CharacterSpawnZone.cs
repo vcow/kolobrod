@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using Common;
+using DG.Tweening;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -33,7 +33,7 @@ namespace AI
 		public override void Start()
 		{
 			_livesLeft.SetValueAndForceNotify(_numLives);
-			StartCoroutine(SpawnRoutine());
+			Spawn();
 		}
 
 		private void OnDestroy()
@@ -47,7 +47,7 @@ namespace AI
 
 		public IReadOnlyReactiveProperty<float> Health => _health;
 
-		private IEnumerator SpawnRoutine()
+		private void Spawn()
 		{
 			Assert.IsNull(_character);
 			Assert.IsTrue(_livesLeft.Value > 0);
@@ -55,8 +55,6 @@ namespace AI
 			var fx = Instantiate(_appearFx);
 			fx.transform.position = new Vector3(_spawnPosition.position.x, 0, 0);
 			Destroy(fx, 3f);
-
-			yield return new WaitForSeconds(0.5f);
 
 			switch (_avatarType)
 			{
@@ -73,15 +71,18 @@ namespace AI
 			}
 
 			_character.transform.position = new Vector3(_spawnPosition.position.x, 0, 0);
+			_character.Color = new Color(1, 1, 1, 0);
 
 			_handlers.Add(_character.CurrentHealth.Subscribe(f =>
 			{
 				_health.SetValueAndForceNotify(Mathf.Clamp01(f / _character.Health));
-				if (_character.IsDead) StartCoroutine(RespawnCharacter());
+				if (_character.IsDead) RespawnCharacter();
 			}));
+
+			DOTween.To(() => new Color(1, 1, 1, 0), value => _character.Color = value, Color.white, 1f);
 		}
 
-		private IEnumerator RespawnCharacter()
+		private void RespawnCharacter()
 		{
 			Assert.IsNotNull(_character);
 
@@ -90,19 +91,22 @@ namespace AI
 			Destroy(fx, 3f);
 
 			_handlers.Clear();
-			Destroy(_character.gameObject, 0.3f);
 
-			_livesLeft.SetValueAndForceNotify(_livesLeft.Value - 1);
-			yield return new WaitForSeconds(2f);
-
-			if (_livesLeft.Value > 0)
-			{
-				StartCoroutine(SpawnRoutine());
-			}
-			else
-			{
-				GameOver();
-			}
+			DOTween.To(() => Color.white, value => _character.Color = value, new Color(1, 1, 1, 0), 0.5f)
+				.OnComplete(() =>
+				{
+					Destroy(_character.gameObject);
+					_character = null;
+					_livesLeft.SetValueAndForceNotify(_livesLeft.Value - 1);
+					if (_livesLeft.Value > 0)
+					{
+						Observable.Timer(TimeSpan.FromSeconds(2)).ObserveOnMainThread().Subscribe(l => Spawn());
+					}
+					else
+					{
+						GameOver();
+					}
+				});
 		}
 
 		private void GameOver()

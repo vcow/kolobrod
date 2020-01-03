@@ -76,11 +76,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c900fd5f32ab403bb5e42bf53e8adc09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 5
   _rechargeTime: 0.1
   _ammoPrefab: {fileID: 4035473362386971532, guid: 55847cd24ea5b4e468eb8651156998ff,
     type: 3}
   _spawnPoint: {fileID: 384891086112050792}
+  _view: {fileID: 4429504334526729557}
   _fireFx: {fileID: 70225039160608288}
 --- !u!1 &4429504334526729559
 GameObject:

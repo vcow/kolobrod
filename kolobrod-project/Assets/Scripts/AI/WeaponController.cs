@@ -10,6 +10,7 @@ namespace AI
 		[SerializeField] protected float _rechargeTime;
 		[SerializeField] protected GameObject _ammoPrefab;
 		[SerializeField] protected Transform _spawnPoint;
+		[SerializeField] protected SpriteRenderer _view;
 
 		public bool Shut(Vector2 targetPoint)
 		{
@@ -19,6 +20,11 @@ namespace AI
 		}
 
 		public bool WeaponIsReady => Time.time > timestamp;
+
+		public Color Color
+		{
+			set => _view.color = value;
+		}
 
 		protected abstract bool DoShut(Vector2 targetPoint);
 	}
