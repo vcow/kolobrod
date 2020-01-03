@@ -14,6 +14,7 @@ namespace GameScene
 #pragma warning disable 649
 		[SerializeField] private RectTransform _livesContainer;
 		[SerializeField] private GameObject _lifePrefab;
+		[SerializeField] private Image _progressBar;
 
 		[Inject] private readonly CharacterSpawnZone _characterSpawnZone;
 #pragma warning restore 649
@@ -26,6 +27,12 @@ namespace GameScene
 			}
 
 			_handlers.Add(_characterSpawnZone.LivesLeft.Subscribe(OnLivesChanged));
+			_handlers.Add(_characterSpawnZone.Health.Subscribe(OnHealthChanged));
+		}
+
+		private void OnHealthChanged(float health)
+		{
+			_progressBar.fillAmount = health;
 		}
 
 		private void OnLivesChanged(int livesLeft)

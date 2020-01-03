@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Anima2D;
@@ -11,6 +12,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Assertions;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace AI
 {
@@ -59,6 +61,8 @@ namespace AI
 
 		private float _initialHealth;
 		private int _walkSoundId;
+
+		private Coroutine _patrolRoutine;
 
 #pragma warning disable 649
 		[SerializeField] private Rigidbody2D _container;
@@ -125,6 +129,7 @@ namespace AI
 
 		private void OnDestroy()
 		{
+			if (_patrolRoutine != null) StopCoroutine(_patrolRoutine);
 			_handlers.Dispose();
 			if (_walkSoundId > 0) _audioManager.StopSound(_walkSoundId);
 		}
@@ -135,8 +140,6 @@ namespace AI
 
 			if (!_player)
 			{
-				_velocity = 0;
-
 				if (Walk)
 				{
 					Walk = false;
@@ -155,33 +158,50 @@ namespace AI
 						_playerHandler = null;
 						_player = null;
 						_playerTransform = null;
+						_aggred = false;
 					});
 					_handlers.Add(_playerHandler);
+					return;
 				}
 
-				return;
-			}
-
-			var magnitude = Mathf.Abs((_playerTransform.position - _transform.position).x);
-			if (!_aggred)
-			{
-				_aggred = magnitude <= _aggressDistance;
-				return;
-			}
-
-			if (!_attack && !_player.IsDead && magnitude <= _attackMaxDistance && magnitude > _attackMinDistance)
-			{
-				AttackPlayer();
-			}
-
-			if (_attack || _player.IsDead)
-			{
-				_velocity = 0;
+				if (_patrolRoutine == null)
+				{
+					_patrolRoutine = StartCoroutine(PatrolRoutine());
+				}
 			}
 			else
 			{
-				_velocity = _playerTransform.position.x < _transform.position.x ? -_speed : _speed;
-				if (magnitude <= _attackMinDistance) _velocity *= -1;
+				var magnitude = Mathf.Abs((_playerTransform.position - _transform.position).x);
+				_aggred |= magnitude <= _aggressDistance;
+
+				if (_aggred)
+				{
+					if (!_attack && !_player.IsDead && magnitude <= _attackMaxDistance &&
+					    magnitude > _attackMinDistance)
+					{
+						AttackPlayer();
+					}
+
+					if (_attack || _player.IsDead)
+					{
+						_velocity = 0;
+					}
+					else
+					{
+						_velocity = _playerTransform.position.x < _transform.position.x ? -_speed : _speed;
+						if (magnitude <= _attackMinDistance) _velocity *= -1;
+					}
+
+					if (_patrolRoutine != null)
+					{
+						StopCoroutine(_patrolRoutine);
+						_patrolRoutine = null;
+					}
+				}
+				else if (_patrolRoutine == null)
+				{
+					_patrolRoutine = StartCoroutine(PatrolRoutine());
+				}
 			}
 
 			var isWalk = Mathf.Abs(_velocity) > 0;
@@ -201,12 +221,27 @@ namespace AI
 			_container.velocity = new Vector2(_velocity, _container.velocity.y);
 		}
 
+		private IEnumerator PatrolRoutine()
+		{
+			var vel = Random.value > 1 ? _speed : -_speed;
+			for (;;)
+			{
+				yield return new WaitForSeconds(1f + Random.Range(0, 5));
+				_velocity = vel;
+				vel *= -1f;
+				yield return new WaitForSeconds(2f + Random.Range(0, 10));
+				_velocity = 0;
+			}
+		}
+
 		private void OnCollide(Collider2D c)
 		{
 			_landing |= c.gameObject.layer == _groundId;
 
 			if (c.gameObject.layer == _ammoId)
 			{
+				_aggred = true;
+
 				_animator.SetTrigger(Hit);
 				var ammo = c.GetComponent<AmmoController>();
 				_health.SetValueAndForceNotify(_health.Value - ammo.Damage);

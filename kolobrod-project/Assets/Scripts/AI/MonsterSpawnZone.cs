@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 namespace AI
@@ -10,7 +12,13 @@ namespace AI
 	[DisallowMultipleComponent]
 	public class MonsterSpawnZone : MonoBehaviour
 	{
+		private readonly CompositeDisposable _handlers = new CompositeDisposable();
+		private IDisposable _spawnTimerHandler;
+		private int _monstersPresent;
+
 #pragma warning disable 649
+		[SerializeField] private int _numMonsters = 3;
+		[SerializeField] private float _spawnDelayTime = 2;
 		[SerializeField] private GameObject _monsterPrefab;
 		[SerializeField] private float _initialScale;
 		[SerializeField] private Vector2 _initialForce;
@@ -23,14 +31,21 @@ namespace AI
 			StartCoroutine(Starter());
 		}
 
+		private void OnDestroy()
+		{
+			_handlers.Dispose();
+		}
+
 		private IEnumerator Starter()
 		{
 			yield return new WaitForSeconds(2);
 			Spawn();
 		}
 
-		public void Spawn()
+		private void Spawn()
 		{
+			Assert.IsNull(_spawnTimerHandler);
+
 			var monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
 			_container?.InjectGameObject(monster);
 			monster.transform.localScale = new Vector3(_initialScale, _initialScale, _initialScale);
@@ -49,6 +64,32 @@ namespace AI
 						body.AddRelativeForce(_initialForce, ForceMode2D.Impulse);
 					});
 				}
+			}
+
+			IDisposable h = null;
+			h = monster.OnDestroyAsObservable().Subscribe(unit =>
+			{
+				// ReSharper disable once AccessToModifiedClosure
+				_handlers.Remove(h);
+				--_monstersPresent;
+				if (_monstersPresent < _numMonsters && _spawnTimerHandler == null)
+				{
+					Spawn();
+				}
+			});
+			_handlers.Add(h);
+
+			++_monstersPresent;
+			if (_monstersPresent < _numMonsters)
+			{
+				_spawnTimerHandler = Observable.Timer(TimeSpan.FromSeconds(_spawnDelayTime)).ObserveOnMainThread()
+					.Subscribe(l =>
+					{
+						_handlers.Remove(_spawnTimerHandler);
+						_spawnTimerHandler = null;
+						Spawn();
+					});
+				_handlers.Add(_spawnTimerHandler);
 			}
 		}
 	}
