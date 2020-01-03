@@ -32,6 +32,9 @@ namespace AI
 
 		private bool _landing;
 
+		private static readonly int[] _deadLayers = {-1, -2, -3};
+		private static int _deadLayerCtr;
+
 		private int _groundId;
 		private int _characterId;
 		private int _containerId;
@@ -75,9 +78,12 @@ namespace AI
 		[SerializeField] private FloatReactiveProperty _health;
 		[SerializeField] private ParticleSystem _smog;
 		[SerializeField] private GameObject _finalExplosionPrefab;
-		[SerializeField] private float _decompositionDuration = 3f;
+		[SerializeField] private float _decompositionDurationMin = 3f;
+		[SerializeField] private float _decompositionDurationMax = 7f;
 		[SerializeField] private SpriteMeshInstance _meshInstance;
+		[SerializeField] private float _explosionRadius = 5f;
 
+		[Inject] private readonly DiContainer _diContainer;
 		[Inject] private readonly IAudioManager _audioManager;
 #pragma warning restore 649
 
@@ -232,6 +238,8 @@ namespace AI
 				yield return new WaitForSeconds(2f + Random.Range(0, 10));
 				_velocity = 0;
 			}
+
+			// ReSharper disable once IteratorNeverReturns
 		}
 
 		private void OnCollide(Collider2D c)
@@ -355,19 +363,29 @@ namespace AI
 				limb.gameObject.SetActive(false);
 			}
 
-			DOTween.To(() => Color.white, value => _meshInstance.color = value, Color.grey, _decompositionDuration)
-				.OnComplete(() =>
+			_meshInstance.sortingOrder = _deadLayers[_deadLayerCtr++ % _deadLayers.Length];
+			DOTween.To(() => Color.white, value => _meshInstance.color = value, Color.grey,
+				Random.Range(_decompositionDurationMin, _decompositionDurationMax)).OnComplete(() =>
+			{
+				var explosion = _diContainer.InstantiateComponentOnNewGameObject<BombController>();
+				explosion.transform.position = _smog.transform.position;
+				explosion.Radius = _explosionRadius;
+				explosion.FxPrefab = _finalExplosionPrefab;
+				explosion.Power = 50;
+
+				_smog.GetComponent<PositionConstraint>().constraintActive = false;
+				_smog.Stop(true);
+				Destroy(_smog.gameObject, 15f);
+				Destroy(gameObject);
+
+				explosion.Detonate();
+
+				if (_player && (explosion.transform.position - _playerTransform.position)
+				    .sqrMagnitude <= _explosionRadius * _explosionRadius)
 				{
-					_smog.GetComponent<PositionConstraint>().constraintActive = false;
-					_smog.Stop(true);
-					Destroy(_smog.gameObject, 15f);
-
-					_audioManager.PlaySound("explosion");
-					var explosion = Instantiate(_finalExplosionPrefab, _smog.transform.position, Quaternion.identity);
-					Destroy(explosion, 3f);
-
-					Destroy(gameObject);
-				});
+					_player.Damage(_damage, null);
+				}
+			});
 		}
 	}
 }

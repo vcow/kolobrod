@@ -80,17 +80,17 @@ namespace AI
 			_handlers.Add(h);
 
 			++_monstersPresent;
-			if (_monstersPresent < _numMonsters)
-			{
-				_spawnTimerHandler = Observable.Timer(TimeSpan.FromSeconds(_spawnDelayTime)).ObserveOnMainThread()
-					.Subscribe(l =>
+			_spawnTimerHandler = Observable.Timer(TimeSpan.FromSeconds(_spawnDelayTime)).ObserveOnMainThread()
+				.Subscribe(l =>
+				{
+					_handlers.Remove(_spawnTimerHandler);
+					_spawnTimerHandler = null;
+					if (_monstersPresent < _numMonsters)
 					{
-						_handlers.Remove(_spawnTimerHandler);
-						_spawnTimerHandler = null;
 						Spawn();
-					});
-				_handlers.Add(_spawnTimerHandler);
-			}
+					}
+				});
+			_handlers.Add(_spawnTimerHandler);
 		}
 	}
 }
