@@ -74,3 +74,6 @@ TagManager:
   - name: CharacterSortingLayer10
     uniqueID: 3450208809
     locked: 0
+  - name: FxSortingLayer
+    uniqueID: 1044409197
+    locked: 0
