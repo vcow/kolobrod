@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1328727441
   m_SortingOrder: -2
   m_BoneTransforms:
   - {fileID: 2756011401280206489}
@@ -746,9 +746,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 7
+  _health: 1000
   _armRotationAxis: {fileID: 2756011399844787892}
-  _health:
-    value: 1000
   _bloodSplatPrefab: {fileID: 3365422414632512832, guid: eca1fb28482e8f942b0eab44f9232cfe,
     type: 3}
   _weaponConnectionPoint: {fileID: 2756011400985218486}
@@ -819,7 +818,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1328727441
   m_SortingOrder: 0
   m_BoneTransforms:
   - {fileID: 2756011399743165945}
@@ -1125,7 +1124,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1328727441
   m_SortingOrder: -1
   m_BoneTransforms:
   - {fileID: 2756011400510722960}
@@ -1449,7 +1448,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1328727441
   m_SortingOrder: 2
   m_BoneTransforms:
   - {fileID: 2756011400129592914}

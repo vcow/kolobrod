@@ -77,12 +77,13 @@ MonoBehaviour:
   _damage: 50
   _health:
     value: 100
+  _meshInstances:
+  - {fileID: 8331979803996666104}
   _smog: {fileID: 5229257910951007381}
   _finalExplosionPrefab: {fileID: 4299610864537532266, guid: 1aa74db2840dbd545a1c4aceeedd28c4,
     type: 3}
   _decompositionDurationMin: 3
   _decompositionDurationMax: 7
-  _meshInstance: {fileID: 8331979803996666104}
   _explosionRadius: 10
 --- !u!82 &7652988798753507448
 AudioSource:
