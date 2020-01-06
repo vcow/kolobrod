@@ -79,6 +79,8 @@ MonoBehaviour:
     value: 100
   _meshInstances:
   - {fileID: 8331979803996666104}
+  _particleSystems:
+  - {fileID: 5229257910951007381}
   _smog: {fileID: 5229257910951007381}
   _finalExplosionPrefab: {fileID: 4299610864537532266, guid: 1aa74db2840dbd545a1c4aceeedd28c4,
     type: 3}
@@ -1298,6 +1300,18 @@ PrefabInstance:
     - target: {fileID: 19828276, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.a
       value: 0.7254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 19915392, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19915392, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19915392, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e99c80b135cae6b40984d0715e47a7fb, type: 3}

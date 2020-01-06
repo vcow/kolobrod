@@ -4531,9 +4531,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1044409197
-  m_SortingLayer: 12
-  m_SortingOrder: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 6
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -10605,9 +10605,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1044409197
-  m_SortingLayer: 12
-  m_SortingOrder: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
   m_RenderMode: 1
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -15181,9 +15181,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1044409197
-  m_SortingLayer: 12
-  m_SortingOrder: -1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 4
   m_RenderMode: 0
   m_SortMode: 1
   m_MinParticleSize: 0
@@ -15531,6 +15531,11 @@ MonoBehaviour:
   - {fileID: 824527861846048802}
   - {fileID: 8823235220200986905}
   - {fileID: 8361575689805877556}
+  _particleSystems:
+  - {fileID: 198000014834889658}
+  - {fileID: 2501539730324822521}
+  - {fileID: 4823202731252346527}
+  - {fileID: 4823202731187051943}
   _flame: {fileID: 4823202731252346527}
   _smoke: {fileID: 2501539730324822521}
   _fire: {fileID: 198000014834889658}
@@ -16302,6 +16307,31 @@ PrefabInstance:
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000011017760676, guid: 954592041b7ff8a40848e9adc0902929,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000011017760676, guid: 954592041b7ff8a40848e9adc0902929,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000011017760676, guid: 954592041b7ff8a40848e9adc0902929,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000011017760676, guid: 954592041b7ff8a40848e9adc0902929,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000011017760676, guid: 954592041b7ff8a40848e9adc0902929,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 954592041b7ff8a40848e9adc0902929, type: 3}

@@ -78,6 +78,7 @@ namespace AI
 		[SerializeField] private float _damage;
 		[SerializeField] private FloatReactiveProperty _health;
 		[SerializeField] private SpriteMeshInstance[] _meshInstances = new SpriteMeshInstance[0];
+		[SerializeField] private ParticleSystem[] _particleSystems = new ParticleSystem[0];
 #pragma warning restore 649
 
 		[Inject] protected readonly DiContainer _diContainer;
@@ -106,6 +107,11 @@ namespace AI
 			foreach (var meshInstance in _meshInstances)
 			{
 				meshInstance.sortingLayerName = sortingLayer;
+			}
+
+			foreach (var ps in _particleSystems)
+			{
+				ps.GetComponent<Renderer>().sortingLayerName = sortingLayer;
 			}
 
 			_groundId = LayerMask.NameToLayer("Ground");

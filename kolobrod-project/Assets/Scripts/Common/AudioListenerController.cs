@@ -37,7 +37,7 @@ namespace Common
 				_pursued = value;
 				_pursuedDestroyHandler?.Dispose();
 
-				if (_pursued != null)
+				if (_pursued != null || !_transform)
 				{
 					_pursuedDestroyHandler = _pursued.OnDestroyAsObservable().Subscribe(unit =>
 					{
