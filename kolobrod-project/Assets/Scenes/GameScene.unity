@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0f734ce5d94c31a9509db824ead03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _numMonsters: 2
+  _numMonsters: 1
   _spawnDelayTime: 5
   _monsterPrefab: {fileID: 8318865074363620598, guid: ef1215a9ab5da924489e0eda2a2872ea,
     type: 3}
