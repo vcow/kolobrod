@@ -41,7 +41,8 @@ namespace AI
 			{
 				var body = _affected[i].GetComponent<Rigidbody2D>();
 				if (body == null) continue;
-				body.AddForceAtPosition(new Vector2(_power, _power), p, ForceMode2D.Impulse);
+				var vector = body.transform.lossyScale * _power;
+				body.AddForceAtPosition(vector, p, ForceMode2D.Impulse);
 			}
 
 			other.GetContacts(_contacts);

@@ -59,13 +59,6 @@ namespace AI
 			DOTween.Sequence()
 				.Append(DOTween.To(() => 5, value => e1.rateOverTime = value, 100, 2).SetEase(Ease.InQuad))
 				.Join(DOTween.To(() => 3, value => e2.rateOverTime = value, 7, 2).SetEase(Ease.Linear))
-				.AppendCallback(() =>
-				{
-					foreach (var rigidBody in _rigidBodies)
-					{
-						rigidBody.simulated = false;
-					}
-				})
 				.Append(DOTween.To(() => Color.white, value =>
 				{
 					foreach (var meshInstance in MeshInstances)
@@ -77,6 +70,11 @@ namespace AI
 				.Join(DOTween.To(() => 7, value => e2.rateOverTime = value, 0, 1).SetEase(Ease.Linear))
 				.OnComplete(() =>
 				{
+					foreach (var rigidBody in _rigidBodies)
+					{
+						rigidBody.simulated = false;
+					}
+
 					_fire.Stop(true);
 					Destroy(gameObject, 5);
 				});
